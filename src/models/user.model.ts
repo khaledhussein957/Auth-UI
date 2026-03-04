@@ -20,12 +20,11 @@ const userSchema: Schema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
-    format: /^\S+@\S+\.\S+$/, // example hhh@info.com
+    match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
   },
   password: {
     type: String,
     required: true,
-    minlength: 8,
   },
   isVerified: {
     type: Boolean,
