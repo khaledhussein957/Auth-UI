@@ -1,15 +1,22 @@
 import User from "@/models/user.model";
+
 import {
-    codeExpiration,
-    comparePassword,
-    generateResetPasswordCode,
-    generateToken,
-    generateVerificationCode,
-    hashPassword,
-    isCodeExpired,
-    isResetPasswordCodeExpired,
-    resetPasswordCodeExpiration,
+  codeExpiration,
+  comparePassword,
+  generateResetPasswordCode,
+  generateToken,
+  generateVerificationCode,
+  hashPassword,
+  isCodeExpired,
+  isResetPasswordCodeExpired,
+  resetPasswordCodeExpiration,
 } from "@/utils/auth";
+
+import {
+  sendPasswordResetRequestEmail,
+  sendPasswordResetSuccessEmail,
+  sendVerificationEmail,
+} from "@/emails/emailHandler";
 
 export const registerUser = async (
   name: string,
@@ -36,7 +43,7 @@ export const registerUser = async (
 
     await newUser.save();
 
-    //TODO: Send verification email with the code
+    await sendVerificationEmail(email, verificationCode, "1 hour");
 
     return {
       message:
@@ -56,8 +63,6 @@ export const verifyEmail = async (email: string, code: string) => {
   if (user.isVerified) {
     throw new Error("Email is already verified");
   }
-
-  // TODO: check if verification code is already generated and not expired, if so, resend the same code instead of generating a new one
 
   const isCodeValid = user.verificationCode === code;
   const isUserCodeExpired = user.verificationCodeExpiration
@@ -112,8 +117,6 @@ export const forgotPassword = async (email: string) => {
     throw new Error("User not found");
   }
 
-  //TODO: check if reset password code is already generated and not expired, if so, resend the same code instead of generating a new one
-
   const resetCode = await generateResetPasswordCode();
 
   user.resetPasswordCode = resetCode;
@@ -121,7 +124,7 @@ export const forgotPassword = async (email: string) => {
 
   await user.save();
 
-  // TODO: Send reset password email with the code
+  await sendPasswordResetRequestEmail(email, resetCode, "15 minutes");
 
   return {
     message:
@@ -159,7 +162,7 @@ export const resetPassword = async (
 
   await user.save();
 
-  // TODO: Send confirmation email about password reset
+  await sendPasswordResetSuccessEmail(email);
 
   return {
     message:
@@ -193,7 +196,7 @@ export const resendVerificationCode = async (email: string, type: string) => {
       user.verificationCode = verificationCode;
       user.verificationCodeExpiration = codeExpiration(1); // code expires in 1 hour
 
-      //   TODO: Send verification email with the code
+      await sendVerificationEmail(email, verificationCode, "1 hour");
     } else if (type === "resetPassword") {
       if (
         user.resetPasswordCode &&
@@ -208,7 +211,7 @@ export const resendVerificationCode = async (email: string, type: string) => {
       user.resetPasswordCode = resetCode;
       user.resetPasswordCodeExpiration = resetPasswordCodeExpiration(15); // code expires in 15 minutes
 
-      //   TODO: Send reset password email with the code
+      await sendPasswordResetRequestEmail(email, resetCode, "15 minutes");
     } else {
       throw new Error("Invalid code type");
     }
