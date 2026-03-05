@@ -12,12 +12,11 @@ export const getTransporter = (): Transporter => {
   const smt_host = process.env.SMTP_HOST;
   const smt_port = process.env.SMTP_PORT;
 
-  if (!smt_user || !smt_pass) {
+  if (!smt_user || !smt_pass || !smt_host || !smt_port) {
     throw new Error(
-      "SMTP_USER and SMTP_PASS environment variables must be set",
+      "SMTP_USER, SMTP_PASS, SMTP_HOST, and SMTP_PORT environment variables must be set",
     );
   }
-
   cachedTransporter = createTransport({
     host: smt_host,
     port: Number(smt_port),

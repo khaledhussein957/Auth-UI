@@ -1,8 +1,8 @@
 import { getTransporter } from "@/config/nodemailer";
 import {
-    PASSWORD_RESET_REQUEST_TEMPLATE,
-    PASSWORD_RESET_SUCCESS_TEMPLATE,
-    VERIFICATION_EMAIL_TEMPLATE,
+  PASSWORD_RESET_REQUEST_TEMPLATE,
+  PASSWORD_RESET_SUCCESS_TEMPLATE,
+  VERIFICATION_EMAIL_TEMPLATE,
 } from "./emailTemplate";
 
 export const sendVerificationEmail = async (
@@ -25,13 +25,13 @@ export const sendVerificationEmail = async (
 
     if (info.rejected.length > 0) {
       throw new Error(
-        `Failed to send email to ${recipientEmail}: ${info.rejected.join(", ")}`,
+        `Email rejected by server: ${info.rejected.length} recipient(s) failed`,
       );
     }
 
     return true;
   } catch (error) {
-    throw new Error("Error sending verification email:" + error);
+    throw new Error("Error sending verification email: " + error);
   }
 };
 
