@@ -12,6 +12,11 @@ export const registerSchema = zod.object({
     .regex(/[@$!%*?&]/, "Password must contain at least one special character"),
 });
 
+export const verifyEmailSchema = zod.object({
+  email: zod.string().email("Invalid email address"),
+  code: zod.string().length(6, "Code must be exactly 6 characters long"),
+});
+
 export const loginSchema = zod.object({
   email: zod.string().email("Invalid email address"),
   password: zod.string().min(8, "Password must be at least 8 characters long"),
@@ -44,12 +49,18 @@ export const resetPasswordSchema = zod
     message: "Passwords do not match",
   });
 
-export const resedCodeSchema = zod.object({
-  email: zod.string().email("Invalid email address"),
+import { z } from "zod";
+
+export const resendCodeSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  type: z.enum(["verification", "resetPassword"], {
+    message: "Type must be either 'verification' or 'resetPassword'",
+  }),
 });
 
 export type RegisterInput = zod.infer<typeof registerSchema>;
+export type VerifyEmailInput = zod.infer<typeof verifyEmailSchema>;
 export type LoginInput = zod.infer<typeof loginSchema>;
 export type ForgotPasswordInput = zod.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = zod.infer<typeof resetPasswordSchema>;
-export type ResendCodeInput = zod.infer<typeof resedCodeSchema>;
+export type ResendCodeInput = zod.infer<typeof resendCodeSchema>;

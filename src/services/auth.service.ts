@@ -24,6 +24,10 @@ export const registerUser = async (
   password: string,
 ) => {
   try {
+    if (!name || !email || !password) {
+      throw new Error("All fields are required");
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error("Email is already registered");
@@ -55,6 +59,10 @@ export const registerUser = async (
 };
 
 export const verifyEmail = async (email: string, code: string) => {
+  if (!email || !code) {
+    throw new Error("Email and verification code are required");
+  }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
@@ -85,6 +93,10 @@ export const verifyEmail = async (email: string, code: string) => {
 };
 
 export const loginUser = async (email: string, password: string) => {
+  if (!email || !password) {
+    throw new Error("All fields are required");
+  }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("Invalid email or password");
@@ -103,15 +115,30 @@ export const loginUser = async (email: string, password: string) => {
 
   await user.save();
 
-  const token = await generateToken(user._id, process.env.JWT_SECRET!, "1h");
+  const token = generateToken(
+    { id: user._id.toString() },
+    process.env.JWT_SECRET!,
+    "1h",
+  );
 
   return {
     message: "Login successful",
     token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+      lastLogin: user.lastLogin,
+    },
   };
 };
 
 export const forgotPassword = async (email: string) => {
+  if (!email) {
+    throw new Error("Email is required");
+  }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
@@ -138,6 +165,10 @@ export const resetPassword = async (
   newPassword: string,
   confirmPassword: string,
 ) => {
+  if (!email || !code || !newPassword || !confirmPassword) {
+    throw new Error("All fields are required");
+  }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
@@ -156,6 +187,10 @@ export const resetPassword = async (
     throw new Error("Passwords do not match");
   }
 
+  if (user.password === comparePassword(newPassword, user.password)) {
+    throw new Error("New password cannot be the same as the old password");
+  }
+
   user.password = await hashPassword(newPassword);
   user.resetPasswordCode = undefined;
   user.resetPasswordCodeExpiration = undefined;
@@ -170,19 +205,23 @@ export const resetPassword = async (
   };
 };
 
-export const resendVerificationCode = async (email: string, type: string) => {
+export const resendCode = async (email: string, type: string) => {
+  if (!email || !type) {
+    throw new Error("Email and code type are required");
+  }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
   }
 
-  if (user.isVerified) {
-    throw new Error("Email is already verified");
-  }
-
   //   type can be "verification" or "resetPassword"
   try {
     if (type === "verification") {
+      if (user.isVerified) {
+        throw new Error("Email is already verified");
+      }
+
       if (
         user.verificationCode &&
         user.verificationCodeExpiration &&
