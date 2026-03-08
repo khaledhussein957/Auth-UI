@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const { token, user } = await loginUser(email, password);
 
-    return new Response(JSON.stringify({ token, user }), { status: 200 });
+    return Response.json({ token, user }, { status: 200 });
   } catch (error: any) {
     console.error(error);
 

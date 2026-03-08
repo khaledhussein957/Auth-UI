@@ -6,35 +6,23 @@ if (!MONGO_URI) {
   throw new Error("MONGO_URI is not defined");
 }
 
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = {
-    conn: null,
-    promise: null,
-  };
-}
-
 const connectDB = async () => {
-  if (cached.conn) {
+  if (mongoose.connection.readyState >= 1) {
     console.log("MongoDB already connected ✅");
-    return cached.conn;
+    return mongoose;
   }
 
-  if (!cached.promise) {
-    console.log("Connecting to MongoDB... ⏳");
+  console.log("Connecting to MongoDB... ⏳");
 
-    cached.promise = mongoose.connect(MONGO_URI, {
-      bufferCommands: false, // Prevent buffering
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-    });
-  }
-
-  cached.conn = await cached.promise;
+  const conn = await mongoose.connect(MONGO_URI, {
+    bufferCommands: false, // Prevent buffering
+    serverSelectionTimeoutMS: 10000, // 10 seconds timeout
+    family: 4, // Use IPv4, skip trying IPv6
+  });
 
   console.log("MongoDB connected successfully ✅");
 
-  return cached.conn;
+  return conn;
 };
 
 export default connectDB;
