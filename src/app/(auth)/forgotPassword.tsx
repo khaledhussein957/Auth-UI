@@ -1,6 +1,7 @@
 import { createAuthStyles } from "@/assets/styles/auth.style";
 import { colors } from "@/constant/colors";
 import { useForgotPassword } from "@/hooks/useAuth";
+import { useThemeStore } from "@/store/themeStore";
 import {
   ForgotPasswordInput,
   forgotPasswordSchema,
@@ -24,7 +25,9 @@ import {
 
 const forgotPassword = () => {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? colors.dark : colors.light;
+  const { theme: currentTheme } = useThemeStore();
+  const isDark = currentTheme === "dark";
+  const theme = isDark ? colors.dark : colors.light;
   const style = createAuthStyles(theme);
 
   const {

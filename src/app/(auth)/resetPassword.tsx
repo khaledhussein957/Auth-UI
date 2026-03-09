@@ -1,6 +1,8 @@
 import { createAuthStyles } from "@/assets/styles/auth.style";
 import { colors } from "@/constant/colors";
 import { useResendCode, useResetPassword } from "@/hooks/useAuth";
+import { useThemeStore } from "@/store/themeStore";
+import { formatTime } from "@/utils/date-format";
 import {
   ResetPasswordInput,
   resetPasswordSchema,
@@ -9,9 +11,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -25,7 +28,9 @@ import {
 
 const ResetPassword = () => {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? colors.dark : colors.light;
+  const { theme: currentTheme } = useThemeStore();
+  const isDark = currentTheme === "dark";
+  const theme = isDark ? colors.dark : colors.light;
   const style = createAuthStyles(theme);
 
   const { email } = useLocalSearchParams<{ email: string }>();
@@ -33,6 +38,17 @@ const ResetPassword = () => {
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes
+
+  useEffect(() => {
+    if (timeLeft === 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const {
     control,
@@ -74,7 +90,8 @@ const ResetPassword = () => {
   };
 
   const handleResendCode = () => {
-    resendCode.mutate({ email: watch("email"), type: "password_reset" });
+    resendCode.mutate({ email: watch("email"), type: "resetPassword" });
+    setTimeLeft(15 * 60); // restart timer
   };
 
   const onVerifyCode = async () => {
@@ -157,14 +174,29 @@ const ResetPassword = () => {
           <TouchableOpacity
             onPress={handleResendCode}
             style={{ marginBottom: 16 }}
+            disabled={resendCode.isPending}
           >
-            <Text style={{ color: theme.primary, textAlign: "center" }}>
-              Resend Code
-            </Text>
+            {resendCode.isPending ? (
+              <ActivityIndicator color={theme.primary} />
+            ) : (
+              <Text style={{ color: theme.primary, textAlign: "center" }}>
+                Resend Code
+              </Text>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={style.button} onPress={onVerifyCode}>
-            <Text style={style.buttonText}>Verify Code</Text>
+          <Text style={{ textAlign: "center", marginBottom: 10 }}>
+            Code expires in {formatTime(timeLeft)}
+          </Text>
+
+          <TouchableOpacity
+            style={style.button}
+            onPress={onVerifyCode}
+            disabled={timeLeft === 0}
+          >
+            <Text style={style.buttonText}>
+              {timeLeft === 0 ? "Code Expired" : "Verify Code"}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -208,7 +240,7 @@ const ResetPassword = () => {
                     <Ionicons
                       name={showPassword ? "eye-outline" : "eye-off-outline"}
                       size={20}
-                      color={colorScheme === "dark" ? "white" : "black"}
+                      color={colorScheme === "dark" ? theme.text : theme.text}
                     />
                   </TouchableOpacity>
                 </View>
@@ -242,7 +274,7 @@ const ResetPassword = () => {
                     <Ionicons
                       name={showPassword ? "eye-outline" : "eye-off-outline"}
                       size={20}
-                      color={colorScheme === "dark" ? "white" : "black"}
+                      color={colorScheme === "dark" ? theme.text : theme.text}
                     />
                   </TouchableOpacity>
                 </View>
@@ -258,7 +290,13 @@ const ResetPassword = () => {
                 style={style.button}
                 onPress={handleSubmit(onCreatePassword)}
               >
-                <Text style={style.buttonText}>Create Password</Text>
+                <Text style={style.buttonText}>
+                  {resetPassword.isPending ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={style.buttonText}>Create Password</Text>
+                  )}
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity

@@ -1,6 +1,7 @@
 import { createAuthStyles } from "@/assets/styles/auth.style";
 import { colors } from "@/constant/colors";
 import { useRegister } from "@/hooks/useAuth";
+import { useThemeStore } from "@/store/themeStore";
 import { RegisterInput, registerSchema } from "@/validations/auth.validate";
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +23,9 @@ import {
 
 const register = () => {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? colors.dark : colors.light;
+  const { theme: currentTheme } = useThemeStore();
+  const isDark = currentTheme === "dark";
+  const theme = isDark ? colors.dark : colors.light;
   const style = createAuthStyles(theme);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -146,7 +149,7 @@ const register = () => {
                   <Ionicons
                     name={showPassword ? "eye-outline" : "eye-off-outline"}
                     size={20}
-                    color={colorScheme === "dark" ? "white" : "black"}
+                    color={colorScheme === "dark" ? theme.text : theme.text}
                   />
                 </TouchableOpacity>
               </View>

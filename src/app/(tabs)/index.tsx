@@ -1,29 +1,23 @@
+import { colors } from "@/constant/colors";
 import { useLogout } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/authStore";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useThemeStore } from "@/store/themeStore";
+import { StyleSheet, Text, useColorScheme, View } from "react-native";
 
 export default function Index() {
+  const colorScheme = useColorScheme();
+  const { theme: currentTheme } = useThemeStore();
+  const isDark = currentTheme === "dark";
+  const theme = isDark ? colors.dark : colors.light;
+
   const { user } = useAuthStore();
   const logut = useLogout();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{`Welcome ${user?.name}`}</Text>
-
-      {/* logout button */}
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#000000",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 20,
-        }}
-        onPress={() => {
-          logut();
-        }}
-      >
-        <Text style={{ color: "#ffffff" }}>Logout</Text>
-      </TouchableOpacity>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text
+        style={[styles.text, { color: theme.text }]}
+      >{`Welcome ${user?.name}`}</Text>
     </View>
   );
 }
@@ -37,6 +31,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     textAlign: "center",
-    color: "#000000",
   },
 });

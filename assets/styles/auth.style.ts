@@ -177,6 +177,7 @@ export const createAuthStyles = (theme: any) =>
       textAlign: "center",
       fontWeight: "600",
       marginBottom: 20,
+      color: theme.textSecondary,
     },
 
     button: {

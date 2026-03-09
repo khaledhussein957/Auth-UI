@@ -32,6 +32,7 @@ export const useRegister = () => {
       return data;
     },
     onSuccess: (_, variables) => {
+      Alert.alert("Registration successful", "Please verify your email");
       router.push({
         pathname: "/(auth)/verifyEmail",
         params: { email: variables.email },
@@ -61,6 +62,7 @@ export const useVerifyEmail = () => {
       return data;
     },
     onSuccess: () => {
+      Alert.alert("Email verified successfully", "Please login");
       router.push("/(auth)");
     },
     onError: (err) => {
@@ -120,7 +122,7 @@ export const useForgotPassword = () => {
       return data;
     },
     onSuccess: (_, payload) => {
-      Alert.alert("check your email");
+      Alert.alert("Forgot Code sent successfully", "Please check your email");
       router.push({
         pathname: "/(auth)/resetPassword",
         params: { email: payload.email },
@@ -144,13 +146,13 @@ export const useResetPassword = () => {
     mutationKey: ["auth", "verify-email"],
     mutationFn: async (payload: ResetPasswordPayload) => {
       const { data } = await api.post<ResetPasswordResponse>(
-        "/auth/verify-email",
+        "/auth/reset-password",
         payload,
       );
       return data;
     },
     onSuccess: () => {
-      Alert.alert("password reset successfully");
+      Alert.alert("password reset successfully", "Please login");
       router.push("/(auth)");
     },
     onError: (err) => {
@@ -167,16 +169,16 @@ export const useResetPassword = () => {
 
 export const useResendCode = () => {
   return useMutation({
-    mutationKey: ["auth", "verify-email"],
+    mutationKey: ["auth", "resend-code"],
     mutationFn: async (payload: ResendCodePayload) => {
       const { data } = await api.post<ResendCodeResponse>(
-        "/auth/verify-email",
+        "/auth/resend-code",
         payload,
       );
       return data;
     },
     onSuccess: () => {
-      Alert.alert("Code sent successfully");
+      Alert.alert("Code sent successfully", "Please check your email");
     },
     onError: (err) => {
       let errorMessage = err.message;

@@ -33,6 +33,10 @@ export const generateToken = (
   return jwt.sign(payload, secret, { expiresIn });
 };
 
+export const verifyToken = async (token: string, secret: string) => {
+  return jwt.verify(token, secret);
+};
+
 export const generateResetPasswordCode = async (): Promise<string> => {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   return code;

@@ -1,6 +1,8 @@
 import { createAuthStyles } from "@/assets/styles/auth.style";
 import { colors } from "@/constant/colors";
 import { useResendCode, useVerifyEmail } from "@/hooks/useAuth";
+import { useThemeStore } from "@/store/themeStore";
+import { formatTime } from "@/utils/date-format";
 import {
   VerifyEmailInput,
   verifyEmailSchema,
@@ -8,7 +10,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -24,12 +26,26 @@ import {
 
 const VerifyEmail = () => {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? colors.dark : colors.light;
+  const { theme: currentTheme } = useThemeStore();
+  const isDark = currentTheme === "dark";
+  const theme = isDark ? colors.dark : colors.light;
   const style = createAuthStyles(theme);
 
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
   const { email } = useLocalSearchParams<{ email: string }>();
+
+  const [timeLeft, setTimeLeft] = useState(60 * 60); // 1 hour
+
+  useEffect(() => {
+    if (timeLeft === 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const {
     control,
@@ -72,6 +88,7 @@ const VerifyEmail = () => {
 
   const handleResendCode = () => {
     resendCode.mutate({ email: watch("email"), type: "verification" });
+    setTimeLeft(60 * 60); // restart 1 hour timer
   };
 
   return (
@@ -138,22 +155,34 @@ const VerifyEmail = () => {
           <TouchableOpacity
             style={style.button}
             onPress={handleSubmit(onSubmit)}
+            disabled={timeLeft === 0}
           >
             {verifyEmail.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={style.buttonText}>Verify</Text>
+              <Text style={style.buttonText}>
+                {timeLeft === 0 ? "Code Expired" : "Verify"}
+              </Text>
             )}
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={handleResendCode}
             style={{ marginTop: 10 }}
+            disabled={resendCode.isPending}
           >
-            <Text style={{ color: theme.primary, textAlign: "center" }}>
-              Resend Code
-            </Text>
+            {resendCode.isPending ? (
+              <ActivityIndicator color={theme.primary} />
+            ) : (
+              <Text style={{ color: theme.primary, textAlign: "center" }}>
+                Resend Code
+              </Text>
+            )}
           </TouchableOpacity>
+
+          <Text style={{ textAlign: "center", marginBottom: 10 }}>
+            Code expires in {formatTime(timeLeft)}
+          </Text>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

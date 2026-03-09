@@ -187,7 +187,8 @@ export const resetPassword = async (
     throw new Error("Passwords do not match");
   }
 
-  if (user.password === comparePassword(newPassword, user.password)) {
+  const isPasswordMatch = await comparePassword(newPassword, user.password);
+  if (isPasswordMatch) {
     throw new Error("New password cannot be the same as the old password");
   }
 
