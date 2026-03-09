@@ -26,7 +26,21 @@ A premium, full-featured authentication system built with Expo 55, featuring a m
 
 ## 🎨 Figma Design Link
 
-[Design Link](https://www.figma.com/design/eRrz2XwVLw2sPkuTgLXfhZ/Auth-UI?node-id=0-1&t=3ogoCa3Nkhu0W26k-1)
+- **Design Link**: [Design Link](https://www.figma.com/design/eRrz2XwVLw2sPkuTgLXfhZ/Auth-UI?node-id=0-1&t=3ogoCa3Nkhu0W26k-1)
+
+- **Prototyping Link**: [Prototyping Link](https://www.figma.com/proto/eRrz2XwVLw2sPkuTgLXfhZ/Auth-UI?node-id=2-284&p=f&t=uRHo89FENRKFdDpE-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A284)
+
+## 📸 ScreenShots
+
+- **Login Screen**: ![Login Screen](./assets/images/login-screen.png)
+- **Register Screen**: ![Register Screen](./assets/images/register-screen.png)
+- **Verify Email Screen**: ![Verify Email Screen](./assets/images/verify-email-screen.png)
+- **Forgot Password Screen**: ![Forgot Password Screen](./assets/images/forgot-password-screen.png)
+- **Reset Password Screen**: ![Reset Password Screen](./assets/images/reset-password-screen.png)
+- **Reset Password Creation Screen**: ![Reset Password Creation Screen](./assets/images/reset-password-creationg.png)
+- **Home Screen**: ![Home Screen](./assets/images/home-screen.png)
+- **Profile Screen**: ![Profile Screen](./assets/images/profile-screen.png)
+- **Delete Account Screen**: ![Delete Account Screen](./assets/images/Delete-Account-profile.png)
 
 ## 🛠️ Getting Started
 
