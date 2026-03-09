@@ -1,56 +1,104 @@
-# Welcome to your Expo app 👋
+# Advanced Authentication UI (React Native/Expo) 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A premium, full-featured authentication system built with Expo 55, featuring a modern UI, secure backend integration, and robust state management.
 
-## Get started
+## ✨ Key Features
 
-1. Install dependencies
+- **Full Auth Flow**: Login, Registration, Email Verification, Password Reset, and Account Deletion.
+- **Modern UI/UX**: Built with React Native Reanimated, Expo Glass Effect, and custom smooth transitions.
+- **Secure Backend**: Integrated with MongoDB via Mongoose, providing a REST API within Expo Router (+api routes).
+- **State Management**: Powered by Zustand for global auth state and TanStack Query for data fetching.
+- **Email System**: Automated email delivery for verification codes and reset links via Nodemailer.
+- **Form Validation**: Type-safe forms using React Hook Form and Zod.
 
-   ```bash
-   npm install
-   ```
+## 🚀 Tech Stack
 
-2. Start the app
+- **Framework**: [Expo 55](https://expo.dev/) (SDK 55)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
+- **Styling**: React Native StyleSheet + [Expo Glass Effect](https://github.com/expo/expo-glass-effect)
+- **Animations**: [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+- **Data Fetching**: [@tanstack/react-query](https://tanstack.com/query/latest)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **Backend/Database**: [Mongoose](https://mongoosejs.com/) (MongoDB)
+- **Communication**: [Nodemailer](https://nodemailer.com/) (SMTP)
+- **Validation**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+- **Package Manager**: [Bun](https://bun.sh/) (Recommended)
 
-   ```bash
-   npx expo start
-   ```
+## 🎨 Figma Design Link
 
-In the output, you'll find options to open the app in a
+[Design Link](https://www.figma.com/design/eRrz2XwVLw2sPkuTgLXfhZ/Auth-UI?node-id=0-1&t=3ogoCa3Nkhu0W26k-1)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🛠️ Getting Started
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 1. Prerequisites
 
-## Get a fresh project
+Ensure you have [Bun](https://bun.sh/) installed (or use npm/yarn).
 
-When you're ready, run:
+### 2. Clone and Install
 
 ```bash
-npm run reset-project
+git clone <repository-url>
+cd Auth-UI
+bun install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3. Environment Variables
 
-### Other setup steps
+Create a `.env.local` file in the root directory (refer to `.env.example`):
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+SMTP_USER=your_email
+SMTP_PASS=your_email_password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+```
 
-## Learn more
+### 4. Run the Project
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+bun start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Press **'a'** for Android
+- Press **'i'** for iOS
+- Press **'w'** for Web
+- Press **'r'** to reload
+- Press **'d'** to open the debugger
+- Press **'m'** to open the menu
+- Press **'q'** to quit
 
-## Join the community
+## 📂 Project Structure
 
-Join our community of developers creating universal apps.
+- `assets/`: Assets and images and styles.
+- `src/app/`: Expo Router pages and API routes.
+  - `app/api/`: API routes.
+  - `app/(auth)/`: Authentication pages.
+  - `app/(tabs)/`: Tab pages.
+  - `app/_layout.tsx`: Root layout.
+- `src/config/`: Configuration files.
+- `src/components/`: Reusable UI components.
+- `src/constants/`: Constants and enums.
+- `src/emails/`: Email templates and handler.
+- `src/hooks/`: Custom hooks.
+- `src/lib/`: Libraries and utilities.
+- `src/models/`: Mongoose database schemas.
+- `src/services/`: API integration and business logic.
+- `src/store/`: Zustand state management.
+- `src/types/`: TypeScript types.
+- `src/utils/` : utilities and helpers.
+- `src/validations/`: Zod schemas for form validation.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📡 API Endpoints
+
+- `POST /api/auth/register`: Create a new user.
+- `POST /api/auth/verify-email`: Verify email with OTP.
+- `POST /api/auth/login`: Authenticate user.
+- `POST /api/auth/forgot-password`: Send reset code.
+- `POST /api/auth/reset-password`: Update password.
+- `DELETE /api/auth/delete-account`: Remove user data.
+
+---
+
+Built with ❤️ by Khalid Hussein
