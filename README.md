@@ -6,26 +6,26 @@ A premium, full-featured authentication system built with Expo 55, featuring a m
 
 ## ✨ Highlights:
 
-📱 Premium Authentication UI (React Native & Expo)
-✨ Modern Glassmorphism & High-End UI/UX
-🔐 Complete Auth Flow (Login, Register, Verify Email, Forgot Password, Reset Password, Logout)
-📧 Secure Email Verification (Built-in OTP Service)
-👤 Profile Management & Account Deletion
-🌐 Integrated Backend (Expo Router + MongoDB)
-🧠 Custom API Implementation (No 3rd Party Auth Services)
-🚀 Backend with Bun, Mongoose, MongoDB & TypeScript
-📡 Full REST API Design & Integration
-🎨 Hardware-Accelerated Animations (Reanimated)
-📱 Cross-Platform Support (iOS, Android & Web)
-🛠️ Advanced State Management (Zustand & TanStack Query)
-🧪 Type-Safe Form Validation (React Hook Form & Zod)
-📧 Automated Email Delivery (Nodemailer & Templates)
-🧰 Professional Project Structure & Clean Code
-🌱 Scalable & Extensible Architecture
-🤖 Optimized for Performance & Smooth Transitions
-🔒 Secure Data Handling & JWT Integration
-📚 Built with Modern React Native Patterns
-🎯 Production-Level Authentication System
+- 📱 Premium Authentication UI (React Native & Expo)
+- ✨ Modern Glassmorphism & High-End UI/UX
+- 🔐 Complete Auth Flow (Login, Register, Verify Email, Forgot Password, Reset Password, Logout)
+- 📧 Secure Email Verification (Built-in OTP Service)
+- 👤 Profile Management & Account Deletion
+- 🌐 Integrated Backend (Expo Router + MongoDB)
+- 🧠 Custom API Implementation (No 3rd Party Auth Services)
+- 🚀 Backend with Bun, Mongoose, MongoDB & TypeScript
+- 📡 Full REST API Design & Integration
+- 🎨 Hardware-Accelerated Animations (Reanimated)
+- 📱 Cross-Platform Support (iOS, Android & Web)
+- 🛠️ Advanced State Management (Zustand & TanStack Query)
+- 🧪 Type-Safe Form Validation (React Hook Form & Zod)
+- 📧 Automated Email Delivery (Nodemailer & Templates)
+- 🧰 Professional Project Structure & Clean Code
+- 🌱 Scalable & Extensible Architecture
+- 🤖 Optimized for Performance & Smooth Transitions
+- 🔒 Secure Data Handling & JWT Integration
+- 📚 Built with Modern React Native Patterns
+- 🎯 Production-Level Authentication System
 
 ## 🚀 Tech Stack
 
