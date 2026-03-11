@@ -127,6 +127,7 @@ bun start
 - `POST /api/auth/login`: Authenticate user.
 - `POST /api/auth/forgot-password`: Send reset code.
 - `POST /api/auth/reset-password`: Update password.
+- `POST /api/auth/resend-code`: Send Code to email by Verification and Forgot Password when code expire.
 - `DELETE /api/auth/delete-account`: Remove user data.
 
 ---
