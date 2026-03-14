@@ -2,7 +2,9 @@
 
 A premium, full-featured authentication system built with Expo 55, featuring a modern UI, secure backend integration, and robust state management.
 
-![Demo App](./assets/images/Auth-UI.png)
+<a href="./assets/videos/auth_video.mp4">
+  <img src="./assets/images/Auth-UI.png" alt="Demo App" width="500" height="500"/>
+</a>
 
 ## ✨ Highlights:
 
